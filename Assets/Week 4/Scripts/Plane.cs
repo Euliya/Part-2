@@ -12,10 +12,11 @@ public class Plane : MonoBehaviour
     LineRenderer lineRenderer;
     Rigidbody2D rigidbody;
     Vector2 currentPosition;
-    public float speed = Random.Range(1,3);
+    public float speed = 1;
     public AnimationCurve landing;
     float timerValue;
     public Sprite[] sprites;
+    SpriteRenderer spriteRenderer;
 
     void Start()
     {
@@ -25,7 +26,8 @@ public class Plane : MonoBehaviour
         GetComponent<Transform>().rotation= Quaternion.Euler(0, 0, Random.Range(0, 360));
         rigidbody = GetComponent<Rigidbody2D>();
         GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0,4)];
-
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        speed = Random.Range(1, 3);
     }
 
     private void FixedUpdate()
@@ -50,7 +52,6 @@ public class Plane : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-
             transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, interpolation);
         }
 
@@ -68,6 +69,10 @@ public class Plane : MonoBehaviour
                 lineRenderer.positionCount--;
             } 
         }
+        if (transform.position.x> 16.5||transform.position.x<-16.5|| transform.position.y>7|| transform.position.y<-7)
+        {
+            Destroy(gameObject);
+        }
 
     }
     private void OnMouseDown()
@@ -76,7 +81,6 @@ public class Plane : MonoBehaviour
         lineRenderer.positionCount = 1;
         lineRenderer.SetPosition(0, transform.position);
     }
-
     private void OnMouseDrag()
     {
         Vector2 newPosition=Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -87,5 +91,22 @@ public class Plane : MonoBehaviour
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, newPosition);
             lastPosition = newPosition;
         }
-    }  
+    }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        spriteRenderer.color = Color.red;
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+       spriteRenderer.color = Color.white;
+    }
+
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        if(Vector3.Distance(transform.position, collision.gameObject.transform.position)<1)
+        {
+            Destroy(gameObject);
+        }
+    }
 }
