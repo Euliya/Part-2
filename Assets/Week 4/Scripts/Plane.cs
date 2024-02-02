@@ -13,10 +13,11 @@ public class Plane : MonoBehaviour
     Rigidbody2D rigidbody;
     Vector2 currentPosition;
     public float speed = 1;
-    public AnimationCurve landing;
-    float timerValue;
     public Sprite[] sprites;
     SpriteRenderer spriteRenderer;
+    float timerValue;
+    public AnimationCurve landing;
+    public bool plane;
 
     void Start()
     {
@@ -43,7 +44,7 @@ public class Plane : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (plane == true)
         {
             timerValue += 0.5f * Time.deltaTime;
             float interpolation = landing.Evaluate(timerValue);
@@ -54,6 +55,7 @@ public class Plane : MonoBehaviour
             }
             transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, interpolation);
         }
+
 
         lineRenderer.SetPosition(0, transform.position);
         if (points.Count > 0 )
@@ -108,5 +110,6 @@ public class Plane : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 }
