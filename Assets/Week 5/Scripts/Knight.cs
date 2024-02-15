@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class Knight : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Knight : MonoBehaviour
     public float health;
     public float maxHealth = 5;
     bool isDead = false;
+    public HealthBar healthBar;
 
 
     // Start is called before the first frame update   
@@ -21,7 +23,10 @@ public class Knight : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        health = maxHealth;
+        health =maxHealth;
+
+        health = PlayerPrefs.GetFloat("Health", maxHealth);
+        SendMessage("SetHealth", health);
     }
 
     private void FixedUpdate()
@@ -69,6 +74,7 @@ public class Knight : MonoBehaviour
     {
         health -= damage;
         health = Mathf.Clamp(health, 0, maxHealth);
+        PlayerPrefs.SetFloat("Health", health);
         if (health == 0)
         {
             isDead = true;
@@ -81,6 +87,10 @@ public class Knight : MonoBehaviour
         }
         
     }
+    public void SetHealth(float hp)
+    {
+        health = hp;
+        PlayerPrefs.SetFloat("Health", maxHealth);
+    }
 
-    
 }

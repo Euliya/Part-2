@@ -1806,6 +1806,7 @@ MonoBehaviour:
   speed: 3
   health: 0
   maxHealth: 5
+  healthBar: {fileID: 4667725960201771892}
 --- !u!61 &4667725960201771889
 BoxCollider2D:
   m_ObjectHideFlags: 0
