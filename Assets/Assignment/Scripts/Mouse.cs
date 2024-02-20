@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class Mouse : MonoBehaviour
 {
@@ -17,11 +18,15 @@ public class Mouse : MonoBehaviour
     public AnimationCurve catchA;
     public bool inHole;
     public bool catched;
+    public float mouseGang;
+    public float fiveMouse = 5;
+    bool gameOver;
     
 
     // Start is called before the first frame update
     void Start()
     {
+        mouseGang = fiveMouse;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -43,6 +48,8 @@ public class Mouse : MonoBehaviour
                 Destroy(gameObject);
             }
             transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, interpolation);
+            
+            SceneManager.LoadScene(3);
         }
     }
     private void FixedUpdate()
@@ -57,7 +64,7 @@ public class Mouse : MonoBehaviour
 
         if (catched == true)
         {
-            speed = 0f;
+            place = (Vector2)transform.position;
             shrink += 1f * Time.deltaTime;
             float interpolation = catchA.Evaluate(shrink);
 
@@ -66,12 +73,31 @@ public class Mouse : MonoBehaviour
                 Destroy(gameObject);
             }
             transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, interpolation);
+            SendMessage("Catched", 1);
+            catched = false;
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         catched = true;
+    }
+
+    public void Catched(float oneMouse)
+    {
+        mouseGang -= oneMouse;
+        mouseGang = Mathf.Clamp(mouseGang, 0f, fiveMouse);
+
+        if (mouseGang == 1)
+        {
+            rb.constraints = RigidbodyConstraints2D.None;
+        }
+
+        if (mouseGang == 0)
+        {
+            SceneManager.LoadScene(2);
+        }
+
     }
 
    

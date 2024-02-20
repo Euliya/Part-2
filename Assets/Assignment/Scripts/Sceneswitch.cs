@@ -18,11 +18,14 @@ public class Sceneswitch : MonoBehaviour
     {
         
     }
-    public void switchScene()
+    public void GameStart()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextSceneIndex = (currentSceneIndex + 1) % SceneManager.sceneCountInBuildSettings;
-        SceneManager.LoadScene(nextSceneIndex);
+        SceneManager.LoadScene(1);
+    }
+
+    public void GameRestart()
+    {
+        SceneManager.LoadScene(0);
     }
 
 }
