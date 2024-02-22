@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
+using UnityEditor;
 
 public class GoalkeeperController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class GoalkeeperController : MonoBehaviour
     Vector2 Distance;
     public Rigidbody2D rb;
     FootbalPlayer SelectedPlayer;
+    float speed = 2;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -28,6 +30,8 @@ public class GoalkeeperController : MonoBehaviour
         {
             position = (Vector2)center.position + Distance.normalized * 3;
         }
-        rb.MovePosition(position);
+        rb.MovePosition(Vector2.MoveTowards(rb.transform.position,position,speed*Time.deltaTime));
+
+
     }
 }
