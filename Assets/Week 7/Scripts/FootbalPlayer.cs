@@ -8,12 +8,16 @@ public class FootbalPlayer : MonoBehaviour
 {
     Color baseColor;
     public SpriteRenderer spriteRenderer;
+    Rigidbody2D rb;
+    public float speed = 500;
+
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         baseColor=spriteRenderer.color;
         Selected(false);
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -23,7 +27,7 @@ public class FootbalPlayer : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        Selected(true);
+        Controller.SetSelectedPlayer(this);
     }
    
     public void Selected(bool selected)
@@ -35,6 +39,10 @@ public class FootbalPlayer : MonoBehaviour
         {
             spriteRenderer.color = baseColor;
         }
+    }
+    public void Move(Vector2 direction)
+    {
+        rb.AddForce(direction*speed);
     }
 
 }
