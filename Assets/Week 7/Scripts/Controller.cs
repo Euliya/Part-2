@@ -3,6 +3,8 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Controller : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class Controller : MonoBehaviour
     Vector2 direction;
     public float maxCharge = 1;
     public static FootbalPlayer SelectedPlayer { get; private set; }
+    public static int Score;
+    public TextMeshProUGUI ST;
     public static void SetSelectedPlayer(FootbalPlayer player)
     {
         if(SelectedPlayer != null)
@@ -48,6 +52,7 @@ public class Controller : MonoBehaviour
             charge = Mathf.Clamp(charge, 0, maxCharge);
             chargeSlider.value = charge;
         }
+        ST.text = Score.ToString();
     }
 
 }
